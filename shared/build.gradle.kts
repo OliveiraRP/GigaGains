@@ -1,6 +1,8 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    kotlin("plugin.serialization") version Deps.kotlinVersion
+    id("com.squareup.sqldelight")
 }
 
 kotlin {
@@ -17,13 +19,29 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(Deps.ktorCore)
+                implementation(Deps.ktorSerialization)
+                implementation(Deps.ktorSerializationJson)
+                implementation(Deps.sqlDelightRuntime)
+                implementation(Deps.sqlDelightCoroutinesExtensions)
+                implementation(Deps.kotlinDateTime)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(Deps.assertK)
+                implementation(Deps.turbine)
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(Deps.ktorAndroid)
+                implementation(Deps.sqlDelightAndroidDriver)
+            }
+        }
         val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -33,6 +51,11 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation(Deps.ktorIOS)
+                implementation(Deps.sqlDelightNativeDriver)
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -48,9 +71,9 @@ kotlin {
 
 android {
     namespace = "com.oliveirarp.gigagains"
-    compileSdk = 32
+    compileSdk = 33
     defaultConfig {
         minSdk = 28
-        targetSdk = 32
+        targetSdk = 33
     }
 }
