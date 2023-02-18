@@ -3,8 +3,8 @@ package com.oliveirarp.gigagains.exercise.data.program_plan
 import com.oliveirarp.gigagains.core.domain.util.CommonFlow
 import com.oliveirarp.gigagains.core.domain.util.toCommonFlow
 import com.oliveirarp.gigagains.database.GigaGainsDatabase
-import com.oliveirarp.gigagains.program_plan.ProgramPlanDataSource
-import com.oliveirarp.gigagains.program_plan.ProgramPlanItem
+import com.oliveirarp.gigagains.program_plan.data.ProgramPlanDataSource
+import com.oliveirarp.gigagains.program_plan.data.ProgramPlanItem
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.map

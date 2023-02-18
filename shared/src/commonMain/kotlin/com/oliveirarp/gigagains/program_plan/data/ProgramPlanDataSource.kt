@@ -1,4 +1,4 @@
-package com.oliveirarp.gigagains.program_plan
+package com.oliveirarp.gigagains.program_plan.data
 
 import com.oliveirarp.gigagains.core.domain.util.CommonFlow
 
