@@ -1,6 +1,7 @@
 package com.oliveirarp.gigagains.exercise.data.exercise
 
 import com.oliveirarp.gigagains.NetworkConstants
+import com.oliveirarp.gigagains.core.domain.exercise.Exercise
 import com.oliveirarp.gigagains.core.domain.muscle_group.MuscleGroup
 import com.oliveirarp.gigagains.exercise.domain.exercise.ExerciseClient
 import com.oliveirarp.gigagains.exercise.domain.exercise.ExerciseError
@@ -14,7 +15,7 @@ class KtorExerciseClient(
     private val httpClient: HttpClient
 ): ExerciseClient {
 
-    override suspend fun listByMuscleGroup(muscleGroup: MuscleGroup): List<ExerciseResponseDto> {
+    override suspend fun listByMuscleGroup(muscleGroup: MuscleGroup): List<Exercise> {
         val result = try {
             httpClient.get {
                 url(NetworkConstants.BASE_URL + "/exercises/target/" + muscleGroup.muscleGroupValue)
@@ -26,7 +27,7 @@ class KtorExerciseClient(
             throw ExerciseException(ExerciseError.SERVICE_UNAVAILABLE)
         }
 
-        when(result.status.value) {
+        when (result.status.value) {
             in 200..299 -> Unit
             500 -> throw ExerciseException(ExerciseError.SERVER_ERROR)
             in 400..499 -> throw ExerciseException(ExerciseError.CLIENT_ERROR)
@@ -34,8 +35,15 @@ class KtorExerciseClient(
         }
 
         return try {
-            result.body()
-        } catch(e: Exception) {
+            result.body<List<ExerciseResponseDto>>().map {
+                Exercise(
+                    id = it.id.toInt(),
+                    name = it.name,
+                    muscleGroup = MuscleGroup.byValue(it.target),
+                    gif = it.gifUrl
+                )
+            }
+        } catch (e: Exception) {
             throw ExerciseException(ExerciseError.SERVER_ERROR)
         }
     }
