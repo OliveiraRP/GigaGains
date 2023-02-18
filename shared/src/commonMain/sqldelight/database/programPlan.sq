@@ -1,0 +1,17 @@
+CREATE TABLE programPlan(
+    exerciseId INTEGER NOT NULL PRIMARY KEY,
+    timestamp INTEGER NOT NULL
+);
+
+getProgramPlan:
+SELECT *
+FROM programPlan
+ORDER BY timestamp DESC;
+
+insertExercise:
+INSERT OR REPLACE
+INTO programPlan(
+    exerciseId,
+    timestamp
+)
+VALUES(?, ?);

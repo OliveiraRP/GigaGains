@@ -77,3 +77,10 @@ android {
         targetSdk = 33
     }
 }
+
+sqldelight {
+    database("GigaGainsDatabase") {
+        packageName = "com.oliveirarp.gigagains.database"
+        sourceFolders = listOf("sqldelight")
+    }
+}
